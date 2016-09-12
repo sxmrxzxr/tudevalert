@@ -1,3 +1,5 @@
+#todo: flesh out more methods that require twilio's api, separate from what will be added in flask server
+
 import credentials as c
 import numbers as n
 from twilio.rest import TwilioRestClient

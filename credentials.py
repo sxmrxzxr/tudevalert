@@ -1,0 +1,3 @@
+account_sid = "AC194e627785908841a40728fbcdcaa23c"
+auth_token = "c5626410790a064b2843cb83a82ef95f"
+phone = "2675260975"
