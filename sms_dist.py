@@ -5,6 +5,7 @@ import numbers as n
 from twilio.rest import TwilioRestClient
 
 client = TwilioRestClient(c.account_sid, c.auth_token)
+#alert = client.messages.create(body="test", to=n.l[0], from_=c.phone)
 
 def send_alert(content):
 	for number in n.l:
