@@ -12,7 +12,7 @@ client = TwilioRestClient(c.account_sid, c.auth_token)
 subs = []
 muted = []
 
-subs = n.on_open(subs, "subs.txt")
+subs = n.on_open(subs, c.subs_path)
 messageBody = " "
 
 @app.route("/", methods=['GET', 'POST'])
@@ -25,6 +25,17 @@ def main():
 		if (from_msg == "SUB"):
 			subs.append(from_num)
 			messageBody = m.new_num
+		#BEGIN UNTESTED CODE
+		elif (from_msg == "MUTE"):
+			muted.append(from_num)
+			messageBody = m.mute
+		elif (from_msg == "LISTEN"):
+			if (from_num in muted):
+				muted.remove(from_num)
+				messageBody = m.listen
+			else:
+				messageBody = m.mute_fail
+		#END UNTESTED CODE
 		else:
 			messageBody = m.not_sub
 	elif (from_num in c.admins):
@@ -42,4 +53,4 @@ def main():
 if __name__ == "__main__":
 	app.run(host="0.0.0.0", debug=False)
 
-n.on_close(subs, "subs.txt")
+n.on_close(subs, c.subs_path)
