@@ -1,4 +1,3 @@
-myNumbers.py
 credentials.py
 credentials.pyc
 sms_dist.pyc
@@ -8,3 +7,4 @@ sms_dist.py.save
 sms_dist.py
 /numbers/
 subs.txt
+myResponses.txt
