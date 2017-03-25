@@ -1,4 +1,7 @@
 # encoding: utf-8
+"""
+This file contains the server.
+"""
 from __future__ import print_function
 
 from os import path
@@ -23,10 +26,15 @@ client = TwilioRestClient(c.account_sid, c.auth_token)
 muted = []
 
 subs = myNum.on_open(c.subs_path)
-messageBody = " "
 
 
-def unknown_sender(number, msg):
+def unsubscribed_sender(number, msg):
+    """
+    This method handles a message from an unsubscribed sender
+    :param number: the phone number from which the message was sent
+    :param msg: the message sent by number
+    :return: the response 
+    """
     if number in subs:
         return
     if msg == 'SUB':
@@ -46,23 +54,26 @@ def unknown_sender(number, msg):
 
 @app.route("/", methods=['GET', 'POST'])
 def main():
+    """
+    The main method to run the server from '/'
+    """
     from_num = request.values.get("From", None)
     from_msg = request.values.get("Body")
     alert_flag = False
 
     if from_num not in subs:
-        messageBody = unknown_sender(from_num, from_msg)
+        message_body = unsubscribed_sender(from_num, from_msg)
     elif from_num in c.admins:
-        messageBody = myRep.build_alert(from_msg)
+        message_body = myRep.build_alert(from_msg)
         alert_flag = True
     else:
-        messageBody = myRep.not_admin
+        message_body = myRep.not_admin
 
     if alert_flag:
         for s in subs:
-            client.messages.create(to=s, from_=c.phone, body=messageBody)
+            client.messages.create(to=s, from_=c.phone, body=message_body)
     else:
-        client.messages.create(to=from_num, from_=c.phone, body=messageBody)
+        client.messages.create(to=from_num, from_=c.phone, body=message_body)
 
 
 if __name__ == "__main__":
